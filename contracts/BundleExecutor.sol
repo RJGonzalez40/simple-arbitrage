@@ -1,31 +1,30 @@
-//SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.6.12;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.0;
 
 pragma experimental ABIEncoderV2;
 
 interface IERC20 {
-    event Approval(address indexed owner, address indexed spender, uint value);
-    event Transfer(address indexed from, address indexed to, uint value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+    event Transfer(address indexed from, address indexed to, uint256 value);
 
     function name() external view returns (string memory);
     function symbol() external view returns (string memory);
     function decimals() external view returns (uint8);
-    function totalSupply() external view returns (uint);
-    function balanceOf(address owner) external view returns (uint);
-    function allowance(address owner, address spender) external view returns (uint);
+    function totalSupply() external view returns (uint256);
+    function balanceOf(address owner) external view returns (uint256);
+    function allowance(address owner, address spender) external view returns (uint256);
 
-    function approve(address spender, uint value) external returns (bool);
-    function transfer(address to, uint value) external returns (bool);
-    function transferFrom(address from, address to, uint value) external returns (bool);
+    function approve(address spender, uint256 value) external returns (bool);
+    function transfer(address to, uint256 value) external returns (bool);
+    function transferFrom(address from, address to, uint256 value) external returns (bool);
 }
 
 interface IWETH is IERC20 {
     function deposit() external payable;
-    function withdraw(uint) external;
+    function withdraw(uint256) external;
 }
 
 // This contract simply calls multiple targets sequentially, ensuring WETH balance before and after
-
 contract FlashBotsMultiCall {
     address private immutable owner;
     address private immutable executor;
@@ -41,7 +40,7 @@ contract FlashBotsMultiCall {
         _;
     }
 
-    constructor(address _executor) public payable {
+    constructor(address _executor) payable {
         owner = msg.sender;
         executor = _executor;
         if (msg.value > 0) {
